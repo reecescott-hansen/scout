@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Scout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       FULLSCREEN LOADER
+  ═══════════════════════════════════════ -->
+  <div class="fullscreen-loader hidden" id="fullscreenLoader">
+    <div class="loader-inner">
+      <svg class="loader-compass" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer ring -->
+        <circle cx="40" cy="40" r="37" stroke="#00C853" stroke-width="1.5" opacity="0.25"/>
+        <!-- Cardinal ticks -->
+        <line x1="40" y1="4" x2="40" y2="10" stroke="#00C853" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+        <line x1="40" y1="70" x2="40" y2="76" stroke="#444" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+        <line x1="4" y1="40" x2="10" y2="40" stroke="#444" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+        <line x1="70" y1="40" x2="76" y2="40" stroke="#444" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+        <!-- Spinning needle group -->
+        <g class="needle-group">
+          <!-- North arrow (green) -->
+          <polygon points="40,10 43.5,36 40,40 36.5,36" fill="#00C853"/>
+          <!-- South arrow (dark) -->
+          <polygon points="40,70 36.5,44 40,40 43.5,44" fill="#2a2a2a"/>
+          <!-- East arrow (muted) -->
+          <polygon points="70,40 44,36.5 40,40 44,43.5" fill="#00C853" opacity="0.35"/>
+          <!-- West arrow (muted) -->
+          <polygon points="10,40 36,43.5 40,40 36,36.5" fill="#2a2a2a" opacity="0.5"/>
+        </g>
+        <!-- Center dot -->
+        <circle cx="40" cy="40" r="4" fill="#00C853"/>
+        <circle cx="40" cy="40" r="2" fill="#0A0A0A"/>
+      </svg>
+      <p class="loader-text">Finding your matches…</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       TOP NAVBAR
+  ═══════════════════════════════════════ -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="17" stroke="#00C853" stroke-width="1.5" opacity="0.4"/>
+          <polygon points="18,3 20.8,15.5 18,18 15.2,15.5" fill="#00C853"/>
+          <polygon points="18,33 15.2,20.5 18,18 20.8,20.5" fill="#333"/>
+          <polygon points="3,18 15.5,15.2 18,18 15.5,20.8" fill="#333"/>
+          <polygon points="33,18 20.5,20.8 18,18 20.5,15.2" fill="#00C853" opacity="0.6"/>
+          <circle cx="18" cy="18" r="2.5" fill="#00C853"/>
+          <circle cx="18" cy="18" r="1.2" fill="#0A0A0A"/>
+        </svg>
+        <span class="logo-text">Scout</span>
+      </div>
+      <button class="api-key-btn" id="apiKeyBtn" title="Set Anthropic API Key">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+        </svg>
+        <span id="apiKeyLabel">API Key</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════ -->
+  <main class="main-content">
+
+    <!-- ─────────── FIND ─────────── -->
+    <section id="view-find" class="view active" role="tabpanel">
+
+      <!-- Profile summary banner -->
+      <div class="profile-banner" id="profileBanner">
+        <div class="banner-avatar" id="bannerAvatar">?</div>
+        <div class="banner-info">
+          <span class="banner-name" id="bannerName">Complete your profile</span>
+          <span class="banner-detail" id="bannerDetail">for personalised matches</span>
+        </div>
+        <button class="banner-edit" data-tab="profile" aria-label="Edit profile">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+      </div>
+
+      <!-- Filter strip -->
+      <div class="filter-block">
+        <div class="filter-row-inline">
+          <select class="chip-select" id="gradeSelect">
+            <option value="">Grade…</option>
+            <option value="9th Grade">9th</option>
+            <option value="10th Grade">10th</option>
+            <option value="11th Grade">11th</option>
+            <option value="12th Grade">12th</option>
+            <option value="College Freshman">Fr.</option>
+            <option value="College Sophomore">So.</option>
+            <option value="College Junior">Jr.</option>
+            <option value="College Senior">Sr.</option>
+          </select>
+          <input type="number" class="chip-input" id="gpaInput" placeholder="GPA" min="0" max="4.0" step="0.1" />
+        </div>
+
+        <!-- Interest pills — horizontal scroll -->
+        <div class="pills-scroll" id="interestPills">
+          <button class="pill" data-interest="STEM">STEM</button>
+          <button class="pill" data-interest="Arts">Arts</button>
+          <button class="pill" data-interest="Business">Business</button>
+          <button class="pill" data-interest="Medicine">Medicine</button>
+          <button class="pill" data-interest="Law">Law</button>
+          <button class="pill" data-interest="Engineering">Engineering</button>
+          <button class="pill" data-interest="Computer Science">CS</button>
+          <button class="pill" data-interest="Environment">Environment</button>
+          <button class="pill" data-interest="Social Justice">Social Justice</button>
+          <button class="pill" data-interest="Writing">Writing</button>
+          <button class="pill" data-interest="Math">Math</button>
+          <button class="pill" data-interest="Research">Research</button>
+        </div>
+
+        <!-- Type toggles -->
+        <div class="type-toggle-row">
+          <label class="type-toggle">
+            <input type="checkbox" class="opp-type" value="scholarship" checked />
+            <span class="type-toggle-label scholarship">Scholarship</span>
+          </label>
+          <label class="type-toggle">
+            <input type="checkbox" class="opp-type" value="internship" checked />
+            <span class="type-toggle-label internship">Internship</span>
+          </label>
+          <label class="type-toggle">
+            <input type="checkbox" class="opp-type" value="program" checked />
+            <span class="type-toggle-label program">Program</span>
+          </label>
+          <label class="type-toggle">
+            <input type="checkbox" class="opp-type" value="competition" checked />
+            <span class="type-toggle-label competition">Competition</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- CTA button -->
+      <button class="cta-btn" id="findBtn">
+        <svg width="22" height="22" viewBox="0 0 36 36" fill="none" class="cta-compass">
+          <polygon points="18,3 20.8,15.5 18,18 15.2,15.5" fill="currentColor"/>
+          <polygon points="18,33 15.2,20.5 18,18 20.8,20.5" fill="currentColor" opacity="0.5"/>
+          <polygon points="3,18 15.5,15.2 18,18 15.5,20.8" fill="currentColor" opacity="0.5"/>
+          <polygon points="33,18 20.5,20.8 18,18 20.5,15.2" fill="currentColor"/>
+          <circle cx="18" cy="18" r="2.5" fill="currentColor"/>
+        </svg>
+        Find Opportunities
+      </button>
+
+      <!-- Error state -->
+      <div class="error-card hidden" id="errorState">
+        <div class="error-icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <p class="error-msg" id="errorMsg">Something went wrong. Please try again.</p>
+        <button class="retry-btn" id="retryBtn">Try Again</button>
+      </div>
+
+      <!-- Results -->
+      <div class="results-list hidden" id="resultsGrid"></div>
+    </section>
+
+    <!-- ─────────── SAVED ─────────── -->
+    <section id="view-saved" class="view" role="tabpanel">
+      <div class="page-header">
+        <h2 class="page-title">Saved</h2>
+        <span class="saved-meta" id="savedMeta"></span>
+      </div>
+
+      <div class="status-filter-row" id="savedFilters">
+        <button class="status-chip active" data-filter="all">All</button>
+        <button class="status-chip" data-filter="Planning">Planning</button>
+        <button class="status-chip" data-filter="In progress">In Progress</button>
+        <button class="status-chip" data-filter="Applied">Applied</button>
+      </div>
+
+      <div class="results-list" id="savedGrid"></div>
+
+      <div class="empty-state hidden" id="savedEmpty">
+        <svg class="empty-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="12" width="48" height="40" rx="6" stroke="#2a2a2a" stroke-width="2"/>
+          <path d="M22 32h20M22 40h14" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+          <path d="M32 12V4M28 4h8" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <p class="empty-title">Nothing saved yet</p>
+        <p class="empty-sub">Find opportunities and save them here</p>
+      </div>
+    </section>
+
+    <!-- ─────────── PROFILE ─────────── -->
+    <section id="view-profile" class="view" role="tabpanel">
+      <div class="page-header">
+        <h2 class="page-title">Profile</h2>
+      </div>
+      <p class="page-sub">Scout uses this to personalise your AI matches.</p>
+
+      <form class="profile-form" id="profileForm" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="profileName">Full Name</label>
+          <input type="text" class="app-input" id="profileName" placeholder="Alex Johnson" />
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label" for="profileGrade">Grade</label>
+            <select class="app-input app-select" id="profileGrade">
+              <option value="">Select…</option>
+              <option value="9th Grade">9th Grade</option>
+              <option value="10th Grade">10th Grade</option>
+              <option value="11th Grade">11th Grade</option>
+              <option value="12th Grade">12th Grade</option>
+              <option value="College Freshman">College Freshman</option>
+              <option value="College Sophomore">College Sophomore</option>
+              <option value="College Junior">College Junior</option>
+              <option value="College Senior">College Senior</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="profileGpa">GPA</label>
+            <input type="number" class="app-input" id="profileGpa" placeholder="3.8" min="0" max="4.0" step="0.1" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="profileEmail">Email</label>
+          <input type="email" class="app-input" id="profileEmail" placeholder="alex@email.com" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="profileBio">About You</label>
+          <textarea class="app-input app-textarea" id="profileBio" rows="3" placeholder="Your goals, activities, background…"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Interests</label>
+          <div class="pill-grid" id="profilePills">
+            <button type="button" class="pill" data-interest="STEM">STEM</button>
+            <button type="button" class="pill" data-interest="Arts">Arts</button>
+            <button type="button" class="pill" data-interest="Business">Business</button>
+            <button type="button" class="pill" data-interest="Medicine">Medicine</button>
+            <button type="button" class="pill" data-interest="Law">Law</button>
+            <button type="button" class="pill" data-interest="Engineering">Engineering</button>
+            <button type="button" class="pill" data-interest="Computer Science">CS</button>
+            <button type="button" class="pill" data-interest="Environment">Environment</button>
+            <button type="button" class="pill" data-interest="Social Justice">Social Justice</button>
+            <button type="button" class="pill" data-interest="Writing">Writing</button>
+            <button type="button" class="pill" data-interest="Math">Math</button>
+            <button type="button" class="pill" data-interest="Research">Research</button>
+          </div>
+        </div>
+
+        <button type="submit" class="save-profile-btn">
+          Save Profile
+        </button>
+        <div class="save-toast hidden" id="saveConfirm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C853" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Profile saved
+        </div>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════
+       BOTTOM NAV
+  ═══════════════════════════════════════ -->
+  <nav class="bottom-nav" role="navigation">
+    <button class="nav-btn active" data-tab="find">
+      <div class="nav-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </div>
+      <span class="nav-label">Find</span>
+    </button>
+    <button class="nav-btn" data-tab="saved">
+      <div class="nav-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+      <span class="nav-label">Saved</span>
+    </button>
+    <button class="nav-btn" data-tab="profile">
+      <div class="nav-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <span class="nav-label">Profile</span>
+    </button>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       API KEY MODAL (bottom sheet style)
+  ═══════════════════════════════════════ -->
+  <div class="sheet-overlay hidden" id="apiModal" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3 class="sheet-title" id="sheetTitle">Anthropic API Key</h3>
+        <button class="sheet-close" id="modalClose" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <p class="sheet-body">Your key is stored only in this browser and sent directly to the Anthropic API — nowhere else.</p>
+      <input type="password" class="app-input" id="apiKeyInput" placeholder="sk-ant-api03-…" autocomplete="off" />
+      <div class="sheet-actions">
+        <button class="sheet-save-btn" id="saveApiKey">Save Key</button>
+        <button class="sheet-ghost-btn" id="clearApiKey">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
