@@ -11,41 +11,79 @@
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════
-       FULLSCREEN LOADER
-  ═══════════════════════════════════════ -->
-  <div class="fullscreen-loader hidden" id="fullscreenLoader">
-    <div class="loader-inner">
-      <svg class="loader-compass" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Outer ring -->
-        <circle cx="40" cy="40" r="37" stroke="#00C853" stroke-width="1.5" opacity="0.25"/>
-        <!-- Cardinal ticks -->
-        <line x1="40" y1="4" x2="40" y2="10" stroke="#00C853" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
-        <line x1="40" y1="70" x2="40" y2="76" stroke="#444" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
-        <line x1="4" y1="40" x2="10" y2="40" stroke="#444" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
-        <line x1="70" y1="40" x2="76" y2="40" stroke="#444" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
-        <!-- Spinning needle group -->
-        <g class="needle-group">
-          <!-- North arrow (green) -->
-          <polygon points="40,10 43.5,36 40,40 36.5,36" fill="#00C853"/>
-          <!-- South arrow (dark) -->
-          <polygon points="40,70 36.5,44 40,40 43.5,44" fill="#2a2a2a"/>
-          <!-- East arrow (muted) -->
-          <polygon points="70,40 44,36.5 40,40 44,43.5" fill="#00C853" opacity="0.35"/>
-          <!-- West arrow (muted) -->
-          <polygon points="10,40 36,43.5 40,40 36,36.5" fill="#2a2a2a" opacity="0.5"/>
-        </g>
-        <!-- Center dot -->
-        <circle cx="40" cy="40" r="4" fill="#00C853"/>
-        <circle cx="40" cy="40" r="2" fill="#0A0A0A"/>
-      </svg>
-      <p class="loader-text">Finding your matches…</p>
+  <!-- Confetti canvas -->
+  <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+
+  <!-- ══════════════════ AUTH OVERLAY ══════════════════ -->
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-bg-glow"></div>
+    <div class="auth-card">
+
+      <div class="auth-logo-wrap">
+        <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="17" stroke="#00C853" stroke-width="1.5" opacity="0.4"/>
+          <polygon points="18,3 20.8,15.5 18,18 15.2,15.5" fill="#00C853"/>
+          <polygon points="18,33 15.2,20.5 18,18 20.8,20.5" fill="#333"/>
+          <polygon points="3,18 15.5,15.2 18,18 15.5,20.8" fill="#333"/>
+          <polygon points="33,18 20.5,20.8 18,18 20.5,15.2" fill="#00C853" opacity="0.6"/>
+          <circle cx="18" cy="18" r="2.5" fill="#00C853"/>
+          <circle cx="18" cy="18" r="1.2" fill="#0A0A0A"/>
+        </svg>
+        <span class="auth-logo-text">Scout</span>
+      </div>
+      <p class="auth-tagline">Find your next big opportunity</p>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="authTabSignup">Create Account</button>
+        <button class="auth-tab" id="authTabLogin">Log In</button>
+      </div>
+
+      <!-- Sign up form -->
+      <form class="auth-form" id="signupForm" novalidate>
+        <div class="auth-field">
+          <label for="signupName">Full Name</label>
+          <input type="text" id="signupName" placeholder="Alex Johnson" autocomplete="name" />
+        </div>
+        <div class="auth-field">
+          <label for="signupUsername">Username</label>
+          <input type="text" id="signupUsername" placeholder="alexj" autocomplete="off" />
+        </div>
+        <div class="auth-field">
+          <label for="signupEmail">Email</label>
+          <input type="email" id="signupEmail" placeholder="you@email.com" autocomplete="email" />
+        </div>
+        <div class="auth-field">
+          <label for="signupPassword">Password</label>
+          <input type="password" id="signupPassword" placeholder="At least 6 characters" autocomplete="new-password" />
+        </div>
+        <div class="auth-error hidden" id="signupError"></div>
+        <button type="submit" class="auth-submit">
+          Create Account
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </form>
+
+      <!-- Log in form -->
+      <form class="auth-form hidden" id="loginForm" novalidate>
+        <div class="auth-field">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" placeholder="you@email.com" autocomplete="email" />
+        </div>
+        <div class="auth-field">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password" />
+        </div>
+        <div class="auth-error hidden" id="loginError"></div>
+        <button type="submit" class="auth-submit">
+          Log In
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </form>
+
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════
-       TOP NAVBAR
-  ═══════════════════════════════════════ -->
+  <!-- ══════════════════ NAVBAR ══════════════════ -->
   <header class="navbar">
     <div class="navbar-inner">
       <div class="logo">
@@ -60,112 +98,347 @@
         </svg>
         <span class="logo-text">Scout</span>
       </div>
-      <button class="api-key-btn" id="apiKeyBtn" title="Set Anthropic API Key">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
-        </svg>
-        <span id="apiKeyLabel">API Key</span>
-      </button>
+      <div class="nav-opp-count" id="navOppCount">
+        <span class="nav-opp-dot"></span>
+        <span id="navOppText">57 opportunities</span>
+      </div>
+      <div class="nav-right-group hidden" id="navRightGroup">
+        <button class="nav-friends-btn hidden" id="navAdminBtn" aria-label="Admin dashboard" title="Admin dashboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6z"/></svg>
+        </button>
+        <button class="nav-friends-btn" id="navFriendsBtn" aria-label="Friends">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="nav-friends-badge hidden" id="navFriendsBadge">0</span>
+        </button>
+        <button class="nav-user-avatar" id="navUserAvatar" data-tab="profile" aria-label="My profile"></button>
+      </div>
     </div>
   </header>
 
-  <!-- ═══════════════════════════════════════
-       MAIN CONTENT
-  ═══════════════════════════════════════ -->
+  <!-- ══════════════════ MAIN ══════════════════ -->
   <main class="main-content">
 
-    <!-- ─────────── FIND ─────────── -->
-    <section id="view-find" class="view active" role="tabpanel">
+    <!-- ─────────── HOME ─────────── -->
+    <section id="view-home" class="view active" role="tabpanel">
 
-      <!-- Profile summary banner -->
-      <div class="profile-banner" id="profileBanner">
-        <div class="banner-avatar" id="bannerAvatar">?</div>
-        <div class="banner-info">
-          <span class="banner-name" id="bannerName">Complete your profile</span>
-          <span class="banner-detail" id="bannerDetail">for personalised matches</span>
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-glow"></div>
+        <div class="hero-grid-pattern"></div>
+
+        <!-- Floating preview cards -->
+        <div class="hero-float-card hero-float-1">
+          <div class="hfc-row">
+            <span class="hfc-icon-wrap hfc-scholarship">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </span>
+            <span class="hfc-type">Scholarship</span>
+          </div>
+          <div class="hfc-name">Gates Scholarship</div>
+          <div class="hfc-award">Full Cost</div>
         </div>
-        <button class="banner-edit" data-tab="profile" aria-label="Edit profile">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+
+        <div class="hero-float-card hero-float-2">
+          <div class="hfc-row">
+            <span class="hfc-icon-wrap hfc-internship">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            </span>
+            <span class="hfc-type">Internship</span>
+          </div>
+          <div class="hfc-name">Google STEP</div>
+          <div class="hfc-award">Paid · $7k/mo</div>
+        </div>
+
+        <div class="hero-float-card hero-float-3">
+          <div class="hfc-row">
+            <span class="hfc-icon-wrap hfc-competition">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4H4l3 7a5 5 0 0 0 10 0l3-7h-3"/><path d="M5 4h14"/></svg>
+            </span>
+            <span class="hfc-type">Competition</span>
+          </div>
+          <div class="hfc-name">Regeneron ISEF</div>
+          <div class="hfc-award">$75,000</div>
+        </div>
+
+        <div class="hero-content">
+          <p class="hero-greeting" id="heroGreeting">Good morning</p>
+          <h1 class="hero-title">Find internships, scholarships, programs, and competitions built for students.</h1>
+          <p class="hero-sub">Scout helps high school students discover real opportunities, track deadlines, and never miss what matters.</p>
+          <div class="hero-actions">
+            <button class="hero-cta hero-cta-primary" id="heroExploreBtn" data-tab="explore">
+              Explore Opportunities
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+            <button class="hero-cta hero-cta-secondary" data-tab="profile">Build Your Profile</button>
+          </div>
+          <p class="hero-credibility">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;color:var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
+            79+ curated opportunities across internships, scholarships, programs, and competitions.
+          </p>
+        </div>
+      </div>
+
+      <!-- Problem statement -->
+      <div class="problem-statement">
+        <p class="problem-text"><strong>Students miss great opportunities</strong> because information is scattered across the internet. Scout brings everything into one place.</p>
+      </div>
+
+      <!-- Stats row -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-value" id="statMatch">—</div>
+          <div class="stat-label">Avg Match</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statDeadline">—</div>
+          <div class="stat-label">Next Deadline</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statSaved">0</div>
+          <div class="stat-label">Saved</div>
+        </div>
+      </div>
+
+      <!-- How Scout Works -->
+      <div class="section-header" style="margin-top:28px">
+        <h2 class="section-title">How Scout Works</h2>
+      </div>
+      <div class="how-it-works">
+        <div class="hiw-step">
+          <div class="hiw-num">1</div>
+          <div class="hiw-body">
+            <div class="hiw-title">Build your profile</div>
+            <div class="hiw-sub">Add your grade, GPA, and interests in 60 seconds</div>
+          </div>
+        </div>
+        <div class="hiw-divider"></div>
+        <div class="hiw-step">
+          <div class="hiw-num">2</div>
+          <div class="hiw-body">
+            <div class="hiw-title">Get matched</div>
+            <div class="hiw-sub">Every opportunity gets a personal match % just for you</div>
+          </div>
+        </div>
+        <div class="hiw-divider"></div>
+        <div class="hiw-step">
+          <div class="hiw-num">3</div>
+          <div class="hiw-body">
+            <div class="hiw-title">Track your progress</div>
+            <div class="hiw-sub">Drag cards across your board as you research and apply</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Why Scout -->
+      <div class="section-header" style="margin-top:24px">
+        <h2 class="section-title">Why Scout?</h2>
+      </div>
+      <div class="why-scout-card">
+        <p class="why-scout-text">Finding internships, scholarships, and programs as a high school student is overwhelming. Opportunities are spread across different websites, deadlines are easy to miss, and many students don't even know what exists.</p>
+        <p class="why-scout-text" style="margin-top:10px">Scout solves this by curating high-quality opportunities in one place, helping students discover, track, and apply with confidence.</p>
+        <div class="why-scout-pills">
+          <span class="why-pill">Free forever</span>
+          <span class="why-pill">Works offline</span>
+          <span class="why-pill">No API key</span>
+          <span class="why-pill">Local matching</span>
+        </div>
+        <p class="why-scout-founder">Built by Reece Scott-Hansen, a high school student interested in business, finance, technology, and helping students access better opportunities.</p>
+      </div>
+
+      <!-- Founder Story -->
+      <div class="section-header" style="margin-top:24px">
+        <h2 class="section-title">Founder Story</h2>
+      </div>
+      <div class="founder-story-card">
+        <div class="founder-story-byline">
+          <div class="founder-story-avatar">R</div>
+          <div>
+            <div class="founder-story-name">Reece Scott-Hansen</div>
+            <div class="founder-story-role">Founder · 11th Grade · NYC</div>
+          </div>
+        </div>
+        <p class="founder-story-text">Scout started as a project built by a high school student interested in business, finance, technology, and helping students find better opportunities. While looking for internships, scholarships, programs, and competitions, I noticed that great opportunities were scattered across different websites and easy to miss.</p>
+        <p class="founder-story-text">I built Scout to make that process simpler. The goal is to give students one clean place to discover opportunities, save what matters, track deadlines, and share useful programs with friends.</p>
+      </div>
+
+      <!-- Friends Activity -->
+      <div class="section-header hidden" id="friendFeedHeader" style="margin-top:28px">
+        <h2 class="section-title">Friends Activity</h2>
+        <button class="see-all-btn" id="friendFeedSeeAll">See all</button>
+      </div>
+      <div class="friend-feed-list" id="friendFeedList"></div>
+
+      <!-- Upcoming deadlines -->
+      <div class="section-header" style="margin-top:28px">
+        <h2 class="section-title">Deadlines Soon</h2>
+        <button class="see-all-btn" data-tab="explore">See all</button>
+      </div>
+      <div class="deadline-list" id="deadlineList"></div>
+
+      <!-- Featured Opportunities -->
+      <div class="section-header" style="margin-top:8px">
+        <h2 class="section-title">Featured Opportunities</h2>
+        <button class="see-all-btn" data-tab="explore">See all</button>
+      </div>
+      <div class="home-cards-list" id="homeCardsList"></div>
+
+      <!-- Popular Opportunities -->
+      <div class="section-header" style="margin-top:8px">
+        <h2 class="section-title">Popular Opportunities</h2>
+        <span class="section-popular-sub" id="popularSub">Most saved</span>
+      </div>
+      <div class="home-cards-list" id="popularList"></div>
+
+      <!-- Platform stats -->
+      <div class="platform-stats">
+        <div class="pstat">
+          <div class="pstat-val" id="pstatOpps">67+</div>
+          <div class="pstat-label">Opportunities</div>
+        </div>
+        <div class="pstat">
+          <div class="pstat-val">4</div>
+          <div class="pstat-label">Categories</div>
+        </div>
+        <div class="pstat">
+          <div class="pstat-val">Free</div>
+          <div class="pstat-label">Always</div>
+        </div>
+        <div class="pstat">
+          <div class="pstat-val">Local</div>
+          <div class="pstat-label">Matching</div>
+        </div>
+      </div>
+
+      <!-- Bottom CTA -->
+      <div class="home-bottom-cta">
+        <p class="home-cta-text">Ready to find your next opportunity?</p>
+        <button class="home-cta-btn" data-tab="explore">
+          Explore All Opportunities
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
       </div>
 
-      <!-- Filter strip -->
-      <div class="filter-block">
-        <div class="filter-row-inline">
-          <select class="chip-select" id="gradeSelect">
-            <option value="">Grade…</option>
-            <option value="9th Grade">9th</option>
-            <option value="10th Grade">10th</option>
-            <option value="11th Grade">11th</option>
-            <option value="12th Grade">12th</option>
-            <option value="College Freshman">Fr.</option>
-            <option value="College Sophomore">So.</option>
-            <option value="College Junior">Jr.</option>
-            <option value="College Senior">Sr.</option>
-          </select>
-          <input type="number" class="chip-input" id="gpaInput" placeholder="GPA" min="0" max="4.0" step="0.1" />
+      <!-- Footer -->
+      <footer class="app-footer">
+        <div class="footer-brand">
+          <div class="footer-logo-text">Scout</div>
+          <p class="footer-tagline">Helping students find opportunities that matter.</p>
         </div>
+        <nav class="footer-nav">
+          <button class="footer-link" data-tab="explore">Explore</button>
+          <button class="footer-link" data-tab="saved">Saved</button>
+          <button class="footer-link" data-tab="profile">Profile</button>
+        </nav>
+        <div class="footer-bottom">
+          <span>Built by Reece Scott-Hansen</span>
+          <span class="footer-dot">·</span>
+          <span>Scout v3 · 2026</span>
+        </div>
+      </footer>
 
-        <!-- Interest pills — horizontal scroll -->
-        <div class="pills-scroll" id="interestPills">
-          <button class="pill" data-interest="STEM">STEM</button>
-          <button class="pill" data-interest="Arts">Arts</button>
-          <button class="pill" data-interest="Business">Business</button>
-          <button class="pill" data-interest="Medicine">Medicine</button>
-          <button class="pill" data-interest="Law">Law</button>
-          <button class="pill" data-interest="Engineering">Engineering</button>
-          <button class="pill" data-interest="Computer Science">CS</button>
-          <button class="pill" data-interest="Environment">Environment</button>
-          <button class="pill" data-interest="Social Justice">Social Justice</button>
-          <button class="pill" data-interest="Writing">Writing</button>
-          <button class="pill" data-interest="Math">Math</button>
-          <button class="pill" data-interest="Research">Research</button>
-        </div>
+    </section>
 
-        <!-- Type toggles -->
-        <div class="type-toggle-row">
-          <label class="type-toggle">
-            <input type="checkbox" class="opp-type" value="scholarship" checked />
-            <span class="type-toggle-label scholarship">Scholarship</span>
-          </label>
-          <label class="type-toggle">
-            <input type="checkbox" class="opp-type" value="internship" checked />
-            <span class="type-toggle-label internship">Internship</span>
-          </label>
-          <label class="type-toggle">
-            <input type="checkbox" class="opp-type" value="program" checked />
-            <span class="type-toggle-label program">Program</span>
-          </label>
-          <label class="type-toggle">
-            <input type="checkbox" class="opp-type" value="competition" checked />
-            <span class="type-toggle-label competition">Competition</span>
-          </label>
+    <!-- ─────────── EXPLORE ─────────── -->
+    <section id="view-explore" class="view" role="tabpanel">
+
+      <!-- Search -->
+      <div class="search-wrap">
+        <div class="search-bar">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" type="text" id="searchInput" placeholder="Search opportunities…" autocomplete="off" />
+          <button class="search-clear hidden" id="searchClear" aria-label="Clear">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
         </div>
+        <button class="sort-pill" id="sortToggleBtn" aria-expanded="false">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+          <span id="sortLabel">Match</span>
+        </button>
       </div>
 
-      <!-- CTA button -->
-      <button class="cta-btn" id="findBtn">
-        <svg width="22" height="22" viewBox="0 0 36 36" fill="none" class="cta-compass">
-          <polygon points="18,3 20.8,15.5 18,18 15.2,15.5" fill="currentColor"/>
-          <polygon points="18,33 15.2,20.5 18,18 20.8,20.5" fill="currentColor" opacity="0.5"/>
-          <polygon points="3,18 15.5,15.2 18,18 15.5,20.8" fill="currentColor" opacity="0.5"/>
-          <polygon points="33,18 20.5,20.8 18,18 20.5,15.2" fill="currentColor"/>
-          <circle cx="18" cy="18" r="2.5" fill="currentColor"/>
-        </svg>
-        Find Opportunities
-      </button>
-
-      <!-- Error state -->
-      <div class="error-card hidden" id="errorState">
-        <div class="error-icon-wrap">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        </div>
-        <p class="error-msg" id="errorMsg">Something went wrong. Please try again.</p>
-        <button class="retry-btn" id="retryBtn">Try Again</button>
+      <!-- Sort dropdown -->
+      <div class="sort-dropdown hidden" id="sortDropdown">
+        <button class="sort-opt active" data-sort="match">Best Match</button>
+        <button class="sort-opt" data-sort="deadline">Earliest Deadline</button>
+        <button class="sort-opt" data-sort="award">Highest Award</button>
       </div>
 
-      <!-- Results -->
-      <div class="results-list hidden" id="resultsGrid"></div>
+      <!-- Category tabs -->
+      <div class="cat-tabs" id="catTabs" role="tablist">
+        <button class="cat-tab active" data-cat="all" role="tab">
+          <span class="cat-tab-icon">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </span>
+          All
+        </button>
+        <button class="cat-tab" data-cat="scholarship" role="tab">
+          <span class="cat-tab-icon cat-icon-scholarship">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </span>
+          Scholarships
+        </button>
+        <button class="cat-tab" data-cat="internship" role="tab">
+          <span class="cat-tab-icon cat-icon-internship">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          </span>
+          Internships
+        </button>
+        <button class="cat-tab" data-cat="program" role="tab">
+          <span class="cat-tab-icon cat-icon-program">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </span>
+          Programs
+        </button>
+        <button class="cat-tab" data-cat="competition" role="tab">
+          <span class="cat-tab-icon cat-icon-competition">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4H4l3 7a5 5 0 0 0 10 0l3-7h-3"/><path d="M5 4h14"/></svg>
+          </span>
+          Competitions
+        </button>
+      </div>
+
+      <!-- Special filters row -->
+      <div class="special-filters-row">
+        <button class="nyc-filter-btn" id="nycFilterBtn" aria-pressed="false">
+          <span class="nyc-filter-icon">🗽</span>
+          For NYC Students
+        </button>
+        <button class="finance-filter-btn" id="financeFilterBtn" aria-pressed="false">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Finance &amp; Business
+        </button>
+      </div>
+
+      <!-- Grade & deadline filters -->
+      <div class="extra-filters-row">
+        <select class="filter-select" id="gradeFilterSelect">
+          <option value="">All Grades</option>
+          <option value="9th Grade">9th Grade</option>
+          <option value="10th Grade">10th Grade</option>
+          <option value="11th Grade">11th Grade</option>
+          <option value="12th Grade">12th Grade</option>
+          <option value="College">College</option>
+        </select>
+        <select class="filter-select" id="deadlineFilterSelect">
+          <option value="">Any Deadline</option>
+          <option value="30">Next 30 days</option>
+          <option value="60">Next 60 days</option>
+          <option value="90">Next 90 days</option>
+          <option value="rolling">Rolling / Open</option>
+        </select>
+      </div>
+
+      <!-- Explore meta row -->
+      <div class="explore-meta-row">
+        <span class="explore-last-updated">Last updated: May 2026</span>
+        <button class="suggest-btn" id="suggestBtn">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Suggest
+        </button>
+      </div>
+
+      <p class="results-count" id="resultsCount">57 opportunities</p>
+      <div class="opp-list" id="exploreList"></div>
     </section>
 
     <!-- ─────────── SAVED ─────────── -->
@@ -175,24 +448,189 @@
         <span class="saved-meta" id="savedMeta"></span>
       </div>
 
-      <div class="status-filter-row" id="savedFilters">
-        <button class="status-chip active" data-filter="all">All</button>
-        <button class="status-chip" data-filter="Planning">Planning</button>
-        <button class="status-chip" data-filter="In progress">In Progress</button>
-        <button class="status-chip" data-filter="Applied">Applied</button>
+      <!-- Sub-navigation tabs -->
+      <div class="saved-subtabs" id="savedSubTabs">
+        <button class="saved-subtab active" data-subtab="tracker">Tracker</button>
+        <button class="saved-subtab" data-subtab="reminders">
+          Reminders
+          <span class="saved-subtab-count hidden" id="remindersCount">0</span>
+        </button>
+        <button class="saved-subtab" data-subtab="shared">Shared</button>
+        <button class="saved-subtab" data-subtab="calendar">Calendar</button>
       </div>
 
-      <div class="results-list" id="savedGrid"></div>
+      <!-- Tracker view (kanban) -->
+      <div id="savedTrackerView">
+
+      <div class="kanban-board" id="kanbanBoard">
+        <div class="kanban-col" data-status="Interested">
+          <div class="kanban-col-hd">
+            <span class="kanban-col-dot dot-interested"></span>
+            <span class="kanban-col-name">Interested</span>
+            <span class="kanban-col-count" id="count-Interested">0</span>
+          </div>
+          <div class="kanban-col-body" id="col-Interested"
+               ondragover="event.preventDefault()" ondrop="handleDrop(event,'Interested')">
+            <div class="kanban-drop-hint">Drop here</div>
+          </div>
+        </div>
+
+        <div class="kanban-col" data-status="Applied">
+          <div class="kanban-col-hd">
+            <span class="kanban-col-dot dot-applied"></span>
+            <span class="kanban-col-name">Applied</span>
+            <span class="kanban-col-count" id="count-Applied">0</span>
+          </div>
+          <div class="kanban-col-body" id="col-Applied"
+               ondragover="event.preventDefault()" ondrop="handleDrop(event,'Applied')">
+            <div class="kanban-drop-hint">Drop here</div>
+          </div>
+        </div>
+
+        <div class="kanban-col" data-status="Interview">
+          <div class="kanban-col-hd">
+            <span class="kanban-col-dot dot-interview"></span>
+            <span class="kanban-col-name">Interview</span>
+            <span class="kanban-col-count" id="count-Interview">0</span>
+          </div>
+          <div class="kanban-col-body" id="col-Interview"
+               ondragover="event.preventDefault()" ondrop="handleDrop(event,'Interview')">
+            <div class="kanban-drop-hint">Drop here</div>
+          </div>
+        </div>
+
+        <div class="kanban-col kanban-col--gotit" data-status="Accepted">
+          <div class="kanban-col-hd">
+            <span class="kanban-col-emoji">🎉</span>
+            <span class="kanban-col-name">Accepted</span>
+            <span class="kanban-col-count" id="count-Accepted">0</span>
+          </div>
+          <div class="kanban-col-body" id="col-Accepted"
+               ondragover="event.preventDefault()" ondrop="handleDrop(event,'Accepted')">
+            <div class="kanban-drop-hint">Drop here</div>
+          </div>
+        </div>
+
+        <div class="kanban-col" data-status="Rejected">
+          <div class="kanban-col-hd">
+            <span class="kanban-col-dot dot-rejected"></span>
+            <span class="kanban-col-name">Rejected</span>
+            <span class="kanban-col-count" id="count-Rejected">0</span>
+          </div>
+          <div class="kanban-col-body" id="col-Rejected"
+               ondragover="event.preventDefault()" ondrop="handleDrop(event,'Rejected')">
+            <div class="kanban-drop-hint">Drop here</div>
+          </div>
+        </div>
+      </div>
 
       <div class="empty-state hidden" id="savedEmpty">
-        <svg class="empty-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8" y="12" width="48" height="40" rx="6" stroke="#2a2a2a" stroke-width="2"/>
-          <path d="M22 32h20M22 40h14" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
-          <path d="M32 12V4M28 4h8" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+        <svg class="empty-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="20" width="60" height="46" rx="8" stroke="#2a2a2a" stroke-width="2"/>
+          <path d="M26 43h28M26 53h18" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+          <path d="M40 20V10" stroke="#00C853" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+          <circle cx="40" cy="8" r="2" fill="#00C853" opacity="0.5"/>
         </svg>
-        <p class="empty-title">Nothing saved yet</p>
-        <p class="empty-sub">Find opportunities and save them here</p>
+        <p class="empty-title">No saved opportunities yet</p>
+        <p class="empty-sub">You haven't saved any opportunities yet. Start exploring and bookmark opportunities to track them here.</p>
+        <button class="empty-cta" data-tab="explore">Browse Opportunities</button>
       </div>
+
+      </div><!-- /savedTrackerView -->
+
+      <!-- Reminders view -->
+      <div id="savedRemindersView" class="hidden">
+        <div id="remindersList"></div>
+        <div class="empty-state hidden" id="remindersEmpty">
+          <svg class="empty-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="44" r="24" stroke="#2a2a2a" stroke-width="2"/>
+            <path d="M40 32v14l8 4" stroke="#00C853" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+            <path d="M33 16h14M40 16v6" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <p class="empty-title">No reminders yet</p>
+          <p class="empty-sub">You don't have any reminders yet. Add reminders so you don't miss important deadlines.</p>
+          <button class="empty-cta" data-tab="explore">Browse Opportunities</button>
+        </div>
+      </div>
+
+      <!-- Shared view -->
+      <div id="savedSharedView" class="hidden">
+        <div class="shared-inner-tabs">
+          <button class="shared-inner-tab active" data-sharedtab="sent">Sent</button>
+          <button class="shared-inner-tab" data-sharedtab="received">
+            Received
+            <span class="saved-subtab-count hidden" id="receivedSharesCount">0</span>
+          </button>
+        </div>
+
+        <div id="sharedSentView">
+          <div id="sharedList"></div>
+          <div class="empty-state hidden" id="sharedEmpty">
+            <svg class="empty-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="56" cy="20" r="8" stroke="#2a2a2a" stroke-width="2"/>
+              <circle cx="56" cy="60" r="8" stroke="#2a2a2a" stroke-width="2"/>
+              <circle cx="24" cy="40" r="8" stroke="#00C853" stroke-width="2" opacity="0.7"/>
+              <path d="M32 37l17-13M32 43l17 13" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <p class="empty-title">No shares yet</p>
+            <p class="empty-sub">You haven't shared any opportunities yet. Share one with a friend to help them discover it.</p>
+            <button class="empty-cta" data-tab="explore">Browse Opportunities</button>
+          </div>
+        </div>
+
+        <div id="sharedReceivedView" class="hidden">
+          <div id="receivedSharesList"></div>
+          <div class="empty-state hidden" id="receivedSharesEmpty">
+            <svg class="empty-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="56" cy="20" r="8" stroke="#2a2a2a" stroke-width="2"/>
+              <circle cx="56" cy="60" r="8" stroke="#2a2a2a" stroke-width="2"/>
+              <circle cx="24" cy="40" r="8" stroke="#00C853" stroke-width="2" opacity="0.7"/>
+              <path d="M32 37l17-13M32 43l17 13" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <p class="empty-title">Nothing shared with you yet</p>
+            <p class="empty-sub">When a Scout friend shares an opportunity with you, it'll show up here.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calendar view -->
+      <div id="savedCalendarView" class="hidden">
+        <div class="cal-nav">
+          <button class="cal-nav-btn" id="calPrevBtn" aria-label="Previous month">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span class="cal-nav-label" id="calNavLabel">Month Year</span>
+          <button class="cal-nav-btn" id="calNextBtn" aria-label="Next month">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+        <div class="cal-weekdays">
+          <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+
+        <div class="cal-selected-day hidden" id="calSelectedDay">
+          <div class="cal-selected-day-label" id="calSelectedDayLabel"></div>
+          <div id="calSelectedDayList"></div>
+        </div>
+
+        <div class="cal-rolling-section hidden" id="calRollingSection">
+          <div class="detail-section-label" style="margin-top:20px">No Fixed Deadline</div>
+          <div id="calRollingList"></div>
+        </div>
+
+        <div class="empty-state hidden" id="calEmpty">
+          <svg class="empty-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="12" y="16" width="56" height="50" rx="6" stroke="#2a2a2a" stroke-width="2"/>
+            <path d="M12 30h56" stroke="#2a2a2a" stroke-width="2"/>
+            <path d="M26 10v12M54 10v12" stroke="#00C853" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          </svg>
+          <p class="empty-title">Nothing on the calendar yet</p>
+          <p class="empty-sub">Save opportunities to see their deadlines mapped out here.</p>
+          <button class="empty-cta" data-tab="explore">Browse Opportunities</button>
+        </div>
+      </div>
+
     </section>
 
     <!-- ─────────── PROFILE ─────────── -->
@@ -200,13 +638,38 @@
       <div class="page-header">
         <h2 class="page-title">Profile</h2>
       </div>
-      <p class="page-sub">Scout uses this to personalise your AI matches.</p>
+
+      <!-- Completion card -->
+      <div class="completion-card">
+        <div class="completion-top">
+          <div class="completion-avatar" id="completionAvatar">?</div>
+          <div class="completion-info">
+            <div class="completion-name" id="completionName">Set up your profile</div>
+            <div class="completion-sub" id="completionSub">Complete profile for better matches</div>
+          </div>
+          <div class="completion-ring">
+            <svg width="52" height="52" viewBox="0 0 52 52">
+              <circle cx="26" cy="26" r="22" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="4"/>
+              <circle cx="26" cy="26" r="22" fill="none" stroke="#00C853" stroke-width="4"
+                      stroke-linecap="round" stroke-dasharray="138.2"
+                      stroke-dashoffset="138.2" id="completionRingFill"
+                      style="transform:rotate(-90deg);transform-origin:26px 26px;transition:stroke-dashoffset 0.6s cubic-bezier(0.25,0.46,0.45,0.94)"/>
+            </svg>
+            <span class="completion-pct" id="completionPct">0%</span>
+          </div>
+        </div>
+        <div class="completion-bar-track">
+          <div class="completion-bar-fill" id="completionBarFill" style="width:0%"></div>
+        </div>
+      </div>
 
       <form class="profile-form" id="profileForm" novalidate>
 
+        <div class="form-section-label">Basic Info</div>
+
         <div class="form-group">
           <label class="form-label" for="profileName">Full Name</label>
-          <input type="text" class="app-input" id="profileName" placeholder="Alex Johnson" />
+          <input type="text" class="app-input" id="profileName" placeholder="Alex Johnson" autocomplete="name" />
         </div>
 
         <div class="form-row-2">
@@ -230,22 +693,25 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="profileEmail">Email</label>
-          <input type="email" class="app-input" id="profileEmail" placeholder="alex@email.com" />
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label" for="profileMajor">Intended Major</label>
+            <input type="text" class="app-input" id="profileMajor" placeholder="Computer Science" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="profileLocation">Location</label>
+            <input type="text" class="app-input" id="profileLocation" placeholder="New York, NY" />
+          </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="profileBio">About You</label>
-          <textarea class="app-input app-textarea" id="profileBio" rows="3" placeholder="Your goals, activities, background…"></textarea>
-        </div>
+        <div class="form-section-label" style="margin-top:4px">Interests</div>
 
         <div class="form-group">
-          <label class="form-label">Interests</label>
           <div class="pill-grid" id="profilePills">
             <button type="button" class="pill" data-interest="STEM">STEM</button>
             <button type="button" class="pill" data-interest="Arts">Arts</button>
             <button type="button" class="pill" data-interest="Business">Business</button>
+            <button type="button" class="pill" data-interest="Finance">Finance</button>
             <button type="button" class="pill" data-interest="Medicine">Medicine</button>
             <button type="button" class="pill" data-interest="Law">Law</button>
             <button type="button" class="pill" data-interest="Engineering">Engineering</button>
@@ -258,70 +724,364 @@
           </div>
         </div>
 
-        <button type="submit" class="save-profile-btn">
-          Save Profile
-        </button>
+        <div class="form-section-label" style="margin-top:4px">About You</div>
+
+        <div class="form-group">
+          <label class="form-label" for="profileBio">Bio</label>
+          <textarea class="app-input app-textarea" id="profileBio" rows="3" placeholder="Your goals, activities, background…"></textarea>
+        </div>
+
+        <button type="submit" class="save-profile-btn">Save Profile</button>
         <div class="save-toast hidden" id="saveConfirm">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C853" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          Profile saved
+          Profile saved — matches updated
         </div>
+
+        <!-- AI Essay Helper settings -->
+        <div class="about-divider">AI Essay Helper</div>
+        <div class="settings-card">
+          <p class="settings-card-text">Scout can generate personalized application tips for any opportunity using Claude. Paste your own Anthropic API key below — it's stored only in your browser and sent only to api.anthropic.com.</p>
+          <div class="form-group" style="margin-top:10px">
+            <label class="form-label" for="anthropicKeyInput">Anthropic API Key</label>
+            <input type="password" class="app-input" id="anthropicKeyInput" placeholder="sk-ant-…" autocomplete="off" />
+          </div>
+          <div class="settings-card-actions">
+            <button type="button" class="settings-save-btn" id="saveApiKeyBtn">Save Key</button>
+            <a class="settings-link" href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer">Get a key →</a>
+          </div>
+          <div class="save-toast hidden" id="apiKeyConfirm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C853" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            API key saved
+          </div>
+        </div>
+
+        <!-- About Scout section -->
+        <div class="about-divider">About Scout</div>
+
+        <div class="founder-card">
+          <div class="founder-card-top">
+            <div class="founder-avatar">R</div>
+            <div class="founder-info">
+              <div class="founder-name">Reece Scott-Hansen</div>
+              <div class="founder-title">Creator & Founder</div>
+            </div>
+            <div class="founder-badge">Maker</div>
+          </div>
+          <p class="founder-bio">Built by Reece Scott-Hansen, an 11th grader at Columbia Grammar &amp; Preparatory School in New York City. Reece built Scout to solve a real problem — finding opportunities as a student is overwhelming and most people don't know where to start. Scout makes it simple.</p>
+          <div class="founder-meta-row">
+            <div class="founder-meta-item">
+              <span class="founder-meta-label">School</span>
+              <span class="founder-meta-val">Columbia Grammar &amp; Prep, NYC</span>
+            </div>
+            <div class="founder-meta-item">
+              <span class="founder-meta-label">Grade</span>
+              <span class="founder-meta-val">11th</span>
+            </div>
+            <div class="founder-meta-item">
+              <span class="founder-meta-label">Interests</span>
+              <span class="founder-meta-val">Business · Finance · Tech</span>
+            </div>
+          </div>
+          <div class="founder-project">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Also building: personal finance journal tracking a live stock portfolio
+          </div>
+          <blockquote class="founder-quote">
+            "I built Scout because I wanted to make it easier for students to find opportunities — not just the ones who already have connections."
+          </blockquote>
+        </div>
+
+        <!-- Logged-in account row -->
+        <div class="logout-section" id="logoutSection">
+          <div class="logout-user">
+            <div class="logout-avatar-circle" id="logoutAvatarCircle"></div>
+            <div class="logout-user-info">
+              <div class="logout-user-name" id="logoutUserName"></div>
+              <div class="logout-user-email" id="logoutUserEmail"></div>
+            </div>
+          </div>
+          <button type="button" class="logout-btn" id="logoutBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Log Out
+          </button>
+        </div>
+
       </form>
     </section>
 
   </main>
 
-  <!-- ═══════════════════════════════════════
-       BOTTOM NAV
-  ═══════════════════════════════════════ -->
+  <!-- ══════════════════ BOTTOM NAV ══════════════════ -->
   <nav class="bottom-nav" role="navigation">
-    <button class="nav-btn active" data-tab="find">
+    <button class="nav-btn active" data-tab="home">
       <div class="nav-icon-wrap">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <span class="nav-label">Home</span>
+    </button>
+    <button class="nav-btn" data-tab="explore">
+      <div class="nav-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
       </div>
-      <span class="nav-label">Find</span>
+      <span class="nav-label">Explore</span>
     </button>
     <button class="nav-btn" data-tab="saved">
       <div class="nav-icon-wrap">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
         </svg>
       </div>
       <span class="nav-label">Saved</span>
+      <span class="nav-badge hidden" id="savedBadge">0</span>
     </button>
     <button class="nav-btn" data-tab="profile">
       <div class="nav-icon-wrap">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-          <circle cx="12" cy="7" r="4"/>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
         </svg>
       </div>
       <span class="nav-label">Profile</span>
     </button>
   </nav>
 
-  <!-- ═══════════════════════════════════════
-       API KEY MODAL (bottom sheet style)
-  ═══════════════════════════════════════ -->
-  <div class="sheet-overlay hidden" id="apiModal" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
-    <div class="sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <h3 class="sheet-title" id="sheetTitle">Anthropic API Key</h3>
-        <button class="sheet-close" id="modalClose" aria-label="Close">
+  <!-- ══════════════════ DETAIL PANEL ══════════════════ -->
+  <div class="detail-overlay hidden" id="detailOverlay" role="dialog" aria-modal="true">
+    <div class="detail-panel" id="detailPanel">
+      <div class="detail-handle"></div>
+      <div class="detail-header" id="detailHeader">
+        <div class="detail-badges" id="detailBadges"></div>
+        <button class="detail-close" id="detailClose" aria-label="Close">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <p class="sheet-body">Your key is stored only in this browser and sent directly to the Anthropic API — nowhere else.</p>
-      <input type="password" class="app-input" id="apiKeyInput" placeholder="sk-ant-api03-…" autocomplete="off" />
-      <div class="sheet-actions">
-        <button class="sheet-save-btn" id="saveApiKey">Save Key</button>
-        <button class="sheet-ghost-btn" id="clearApiKey">Clear</button>
+      <div class="detail-scroll">
+        <h2 class="detail-title" id="detailTitle"></h2>
+        <p class="detail-org" id="detailOrg"></p>
+
+        <div class="detail-meta-row" id="detailMetaRow"></div>
+
+        <div class="detail-section">
+          <div class="detail-section-label">About</div>
+          <p class="detail-text" id="detailDesc"></p>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-label">Eligibility</div>
+          <p class="detail-text" id="detailEligibility"></p>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-label">Tips for Applying</div>
+          <p class="detail-text detail-tips" id="detailTips"></p>
+        </div>
+
+        <div class="detail-section detail-ai-section">
+          <div class="detail-section-label">AI Essay Helper</div>
+          <button class="ai-tips-btn" id="aiTipsBtn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.9L19 9l-5.1 1.9L12 16l-1.9-5.1L5 9l5.1-1.1z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
+            Get AI tips for my application
+          </button>
+          <div class="ai-tips-result hidden" id="aiTipsResult"></div>
+        </div>
+
+        <div class="detail-actions">
+          <a class="detail-apply-btn" id="detailApplyBtn" href="#" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Apply / Learn More
+          </a>
+          <button class="detail-save-btn" id="detailSaveBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <span id="detailSaveBtnText">Save</span>
+          </button>
+        </div>
+        <div class="detail-secondary-actions">
+          <button class="detail-action-btn" id="detailShareBtn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share
+          </button>
+          <button class="detail-action-btn" id="detailRemindBtn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Remind Me
+          </button>
+        </div>
+        <!-- Per-opportunity notes in detail panel -->
+        <div class="detail-notes-section">
+          <div class="detail-section-label" style="margin-bottom:8px">My Notes</div>
+          <textarea class="detail-notes-input" id="detailNotesInput" placeholder="Add a private note — like 'Need recommendation letter' or 'Apply this weekend'…" rows="3"></textarea>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- ══════════════════ SHARE MODAL ══════════════════ -->
+  <div class="modal-overlay hidden" id="shareModal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Share Opportunity</h3>
+        <button class="modal-close" id="shareModalClose" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-opp-name" id="shareModalOppName"></div>
+
+      <div class="modal-field hidden" id="shareFriendPickerWrap">
+        <label class="modal-label" for="shareFriendPicker">Send to a Scout friend</label>
+        <div class="modal-friend-picker-row">
+          <select class="modal-input" id="shareFriendPicker"></select>
+          <button class="modal-friend-send-btn" id="shareFriendSendBtn">Send</button>
+        </div>
+      </div>
+      <div class="modal-divider hidden" id="shareFriendDivider">or</div>
+
+      <div class="modal-quick-row">
+        <button class="modal-quick-btn" id="shareCopyLink">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          Copy Link
+        </button>
+        <button class="modal-quick-btn" id="shareCopyDetails">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Details
+        </button>
+      </div>
+      <div class="modal-divider">or save who you shared it with</div>
+      <div class="modal-field">
+        <label class="modal-label" for="shareFriendName">Friend's Name</label>
+        <input class="modal-input" type="text" id="shareFriendName" placeholder="Alex" autocomplete="off" />
+      </div>
+      <div class="modal-field">
+        <label class="modal-label" for="shareFriendContact">Email or username <span class="modal-optional">optional</span></label>
+        <input class="modal-input" type="text" id="shareFriendContact" placeholder="alex@email.com" autocomplete="off" />
+      </div>
+      <div class="modal-field">
+        <label class="modal-label" for="shareMessage">Message <span class="modal-optional">optional</span></label>
+        <textarea class="modal-input modal-textarea" id="shareMessage" placeholder="Hey, check this out!" rows="2"></textarea>
+      </div>
+      <button class="modal-submit" id="shareSubmit">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Save Share
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════ REMIND MODAL ══════════════════ -->
+  <div class="modal-overlay hidden" id="remindModal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Set Reminder</h3>
+        <button class="modal-close" id="remindModalClose" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-opp-name" id="remindModalOppName"></div>
+      <div class="modal-deadline-info" id="remindModalDeadline"></div>
+      <p class="modal-field-label">Remind me before the deadline:</p>
+      <div class="remind-options">
+        <button class="remind-option" data-days="1">
+          <span class="remind-option-main">1 day before</span>
+          <span class="remind-option-sub">Last-minute alert</span>
+        </button>
+        <button class="remind-option" data-days="3">
+          <span class="remind-option-main">3 days before</span>
+          <span class="remind-option-sub">Recommended</span>
+        </button>
+        <button class="remind-option" data-days="7">
+          <span class="remind-option-main">1 week before</span>
+          <span class="remind-option-sub">Plan ahead</span>
+        </button>
+      </div>
+      <p class="remind-note">Reminders are stored locally on your device. Open Scout to check your deadline status.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════ TOAST ══════════════════ -->
+  <div class="app-toast hidden" id="appToast">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C853" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toastMsg">Done</span>
+  </div>
+
+  <!-- ══════════════════ FRIENDS PANEL ══════════════════ -->
+  <div class="detail-overlay hidden" id="friendsOverlay" role="dialog" aria-modal="true">
+    <div class="detail-panel friends-panel">
+      <div class="detail-handle"></div>
+      <div class="detail-header">
+        <h2 class="friends-panel-title">Friends</h2>
+        <button class="detail-close" id="friendsClose" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="detail-scroll">
+
+        <div class="friends-search-row">
+          <input class="app-input" type="text" id="friendSearchInput" placeholder="Search by username…" autocomplete="off" />
+          <button class="friends-search-btn" id="friendSearchBtn">Search</button>
+        </div>
+        <div id="friendSearchResults"></div>
+
+        <div id="friendRequestsSection" class="hidden">
+          <div class="detail-section-label" style="margin-top:20px">Friend Requests</div>
+          <div id="friendRequestsList"></div>
+        </div>
+
+        <div class="detail-section-label" style="margin-top:20px">Your Friends</div>
+        <div id="friendsListEl"></div>
+        <div class="empty-state hidden" id="friendsEmpty">
+          <svg class="empty-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="56" cy="20" r="8" stroke="#2a2a2a" stroke-width="2"/>
+            <circle cx="56" cy="60" r="8" stroke="#2a2a2a" stroke-width="2"/>
+            <circle cx="24" cy="40" r="8" stroke="#00C853" stroke-width="2" opacity="0.7"/>
+            <path d="M32 37l17-13M32 43l17 13" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <p class="empty-title">No friends yet</p>
+          <p class="empty-sub">Search for a friend by their Scout username to send a request.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ ADMIN PANEL ══════════════════ -->
+  <div class="detail-overlay hidden" id="adminOverlay" role="dialog" aria-modal="true">
+    <div class="detail-panel friends-panel">
+      <div class="detail-handle"></div>
+      <div class="detail-header">
+        <h2 class="friends-panel-title">Admin</h2>
+        <button class="detail-close" id="adminClose" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="detail-scroll">
+
+        <div class="admin-stats-row">
+          <div class="admin-stat-card">
+            <div class="admin-stat-val" id="adminStatUsers">—</div>
+            <div class="admin-stat-label">Total Users</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-val" id="adminStatActivity">—</div>
+            <div class="admin-stat-label">Actions Logged</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-val" id="adminStatFriendships">—</div>
+            <div class="admin-stat-label">Friendships</div>
+          </div>
+        </div>
+
+        <div class="detail-section-label" style="margin-top:20px">All Users</div>
+        <div id="adminUsersList"></div>
+        <div class="empty-state hidden" id="adminUsersEmpty">
+          <p class="empty-title">No users yet</p>
+          <p class="empty-sub">Nobody has signed up for Scout yet.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
